@@ -45,7 +45,7 @@ void Bookstore::Run() {
       log_entry.type_ = LogEntry::QUIT;
       log_entry.quit_log_ = log;
       logs_.AddLog(log_entry);
-      break;
+      return;
     }
     
     if (command == "su") {
@@ -81,6 +81,9 @@ void Bookstore::Run() {
     if (!has_command) {
       break;
     }
+  }
+  if (!logged_in_users_.empty()) {
+    exit(1);
   }
 }
 
