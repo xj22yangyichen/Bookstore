@@ -6,4 +6,5 @@ testcases/
 Issues.md
 test_output/
 *.dat
-*.txt
+in.txt
+out.txt
