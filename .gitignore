@@ -1,0 +1,9 @@
+build/
+.vscode/
+scripts/
+data/
+testcases/
+Issues.md
+test_output/
+*.dat
+*.txt
