@@ -16,7 +16,7 @@ private:
   std::stack<my_string> logged_in_users_;
   Account current_user_;
   std::stack<int> selected_books_id_;
-  Book current_selected_book_;
+  int current_selected_book_id_;
   Command current_command_;
 public:
   Bookstore();

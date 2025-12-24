@@ -11,6 +11,7 @@ Bookstore::Bookstore() : logs_(), books_(), accounts_("accounts") {
 }
 
 Bookstore::~Bookstore() {
+  // std::cerr << "Shutting down bookstore, logging out all users." << std::endl;
   while (!logged_in_users_.empty()) {
     Logout(true);
   }
@@ -45,7 +46,7 @@ void Bookstore::Run() {
       log_entry.type_ = LogEntry::QUIT;
       log_entry.quit_log_ = log;
       logs_.AddLog(log_entry);
-      return;
+      break;
     }
     
     if (command == "su") {
@@ -81,9 +82,6 @@ void Bookstore::Run() {
     if (!has_command) {
       break;
     }
-  }
-  if (!logged_in_users_.empty()) {
-    exit(1);
   }
 }
 
@@ -134,7 +132,7 @@ void Bookstore::Login() {
   logged_in_users_.push(user_id);
   current_user_ = account;
   selected_books_id_.push(-1);
-  current_selected_book_ = Book();
+  current_selected_book_id_ = -1;
 
   LoginLog log;
   log.time_ = ++time;
@@ -169,11 +167,10 @@ void Bookstore::Logout(bool force) {
   selected_books_id_.pop();
   if (logged_in_users_.empty()) {
     current_user_ = Account();
-    current_selected_book_ = Book();
+    current_selected_book_id_ = -1;
   } else {
     current_user_ = accounts_.find(logged_in_users_.top());
-    current_selected_book_ = selected_books_id_.top() == -1 ? Book()
-                           : books_.GetBooksById(selected_books_id_.top());
+    current_selected_book_id_ = selected_books_id_.top();
   }
 }
 
@@ -205,7 +202,7 @@ void Bookstore::Register() {
     printf("Invalid\n");
     return;
   }
-  my_string name = my_string(token);
+  my_string name = GetUsername(token);
   if (name.a[0] == '\n') {
     printf("Invalid\n");
     return;
@@ -569,9 +566,6 @@ void Bookstore::Buy() {
   double total_price = book.price_ * quantity;
   std::cout << std::fixed << std::setprecision(2) << total_price << std::endl;
   books_.ModifyQuantity(ISBN, book.quantity_ - quantity);
-  if (current_selected_book_.isbn_ == ISBN) {
-    current_selected_book_.quantity_ -= quantity;
-  }
 
   BuyLog log;
   log.time_ = ++time;
@@ -612,7 +606,7 @@ void Bookstore::Select() {
   if (books.empty()) {
     book = Book(books_.size(), ISBN);
     books_.add(book);
-    // std::cerr << "Added new book with ISBN: " << ISBN.a << std::endl;
+    // std::cerr << "Added new book with ISBN: " << ISBN.a << " ID: " << book.id_ << std::endl;
   } else {
     book = books[0];
     // std::cerr << "Selected existing book with ID: " << book.id_ << std::endl;
@@ -620,17 +614,17 @@ void Bookstore::Select() {
   // std::cerr << "Selected book ID: " << book.id_ << std::endl;
   selected_books_id_.pop();
   selected_books_id_.push(book.id_);
-  current_selected_book_ = book;
+  current_selected_book_id_ = book.id_;
 }
 
 void Bookstore::Modify() {
-  Book old_book = current_selected_book_;
-  if (current_user_.getPrivilege() < 3 || old_book.id_ == -1) {
+  if (current_user_.getPrivilege() < 3 || current_selected_book_id_ == -1) {
     // std::cerr << "Invalid modify attempt by user: " << current_user_.getID().a << std::endl;
     printf("Invalid\n");
     return;
   }
 
+  Book old_book = books_.GetBooksById(current_selected_book_id_);
   std::string token = current_command_.next_token();
   if (token.empty()) {
     printf("Invalid\n");
@@ -729,7 +723,6 @@ void Bookstore::Modify() {
     books_.ModifyIsbn(old_book.isbn_, new_isbn);
     new_book.isbn_ = new_isbn;
   }
-  current_selected_book_ = new_book;
 
   ModifyLog log;
   log.time_ = ++time;
@@ -743,11 +736,12 @@ void Bookstore::Modify() {
 }
 
 void Bookstore::Import() {
-  if (current_user_.getPrivilege() < 3 || current_selected_book_.id_ == -1) {
+  if (current_user_.getPrivilege() < 3 || current_selected_book_id_ == -1) {
     printf("Invalid\n");
     return;
   }
 
+  Book current_selected_book_ = books_.GetBooksById(current_selected_book_id_);
   std::string token = current_command_.next_token();
   if (token.empty()) {
     printf("Invalid\n");
@@ -775,7 +769,6 @@ void Bookstore::Import() {
   }
 
   books_.ModifyQuantity(current_selected_book_.isbn_, current_selected_book_.quantity_ + quantity);
-  current_selected_book_.quantity_ += quantity;
 
   ImportLog log;
   log.time_ = ++time;

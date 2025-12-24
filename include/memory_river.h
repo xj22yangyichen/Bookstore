@@ -23,8 +23,8 @@ public:
   MemoryRiver(const string& file_name) : file_name(file_name) {}
 
   ~MemoryRiver() {
-    write_info(size_, 0);
     if (file.is_open()) {
+      write_info(size_, 0);
       file.close();
     }
   }
@@ -47,8 +47,8 @@ public:
         create_file.write(reinterpret_cast<char *>(&tmp), sizeof(int));
       create_file.close();
     }
-    get_info(size_, 0);
     file.open(file_name, std::ios::in | std::ios::out | std::ios::binary);
+    get_info(size_, 0);
   }
 
   // 读出第n个int的值赋给tmp，0_base

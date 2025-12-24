@@ -4,7 +4,7 @@
 #include <string.h>
 
 struct my_string {
-  char a[65];
+  char a[80];
 
   my_string() {
     memset(a, 0, sizeof(a));
