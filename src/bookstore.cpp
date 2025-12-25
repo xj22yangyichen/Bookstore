@@ -496,6 +496,10 @@ void Bookstore::Show() {
         printf("Invalid\n");
         return;
       }
+      if (token.find('|') != std::string::npos) {
+        printf("Invalid\n");
+        return;
+      }
       auto books = books_.GetBooksByKeyword(keyword);
       if (books.empty()) {
         printf("\n");
