@@ -67,55 +67,55 @@ void Logs::AddLog(const LogEntry &log_entry) {
   switch (log_entry.type_) {
     case LogEntry::QUIT:
       log_str = "[QUIT/EXIT] User " + std::string(log_entry.quit_log_.account_.getID().a)
-              + " exited the system at " + std::to_string(log_entry.quit_log_.time_);
+              + " exited the system at time " + std::to_string(log_entry.quit_log_.time_);
       break;
     case LogEntry::LOGIN:
       log_str = "[LOGIN] User " + std::string(log_entry.login_log_.account_.getID().a)
-              + " logged in at " + std::to_string(log_entry.login_log_.time_);
+              + " logged in at time " + std::to_string(log_entry.login_log_.time_);
       break;
     case LogEntry::LOGOUT:
       log_str = "[LOGOUT] User " + std::string(log_entry.logout_log_.account_.getID().a)
-              + " logged out at " + std::to_string(log_entry.logout_log_.time_);
+              + " logged out at time " + std::to_string(log_entry.logout_log_.time_);
       break;
     case LogEntry::REGISTER:
       log_str = "[REGISTER] User " + std::string(log_entry.register_log_.account_.getID().a)
-              + " registered at " + std::to_string(log_entry.register_log_.time_);
+              + " registered at time " + std::to_string(log_entry.register_log_.time_);
       break;
     case LogEntry::PASSWORD_CHANGE:
       log_str = "[PASSWORD_CHANGE] User " + std::string(log_entry.password_change_log_.account_.getID().a)
               + "'s password changed from " + std::string(log_entry.password_change_log_.old_password_.a)
               + " to " + std::string(log_entry.password_change_log_.new_password_.a)
-              + " at " + std::to_string(log_entry.password_change_log_.time_);
+              + " at time " + std::to_string(log_entry.password_change_log_.time_);
       break;
     case LogEntry::USER_ADD:
       log_str = "[USER_ADD] User " + std::string(log_entry.user_add_log_.admin_account_.getID().a)
               + " added user " + std::string(log_entry.user_add_log_.new_account_.getID().a)
               + " with privilege " + std::to_string(log_entry.user_add_log_.new_account_.getPrivilege())
-              + " at " + std::to_string(log_entry.user_add_log_.time_);
+              + " at time " + std::to_string(log_entry.user_add_log_.time_);
       break;
     case LogEntry::USER_DELETE:
       log_str = "[USER_DELETE] Deleted user " + std::string(log_entry.user_delete_log_.account_.getID().a)
-              + " at " + std::to_string(log_entry.user_delete_log_.time_);
+              + " at time " + std::to_string(log_entry.user_delete_log_.time_);
       break;
     case LogEntry::BUY:
       log_str = "[BUY] User " + std::string(log_entry.buy_log_.account_.getID().a)
               + " bought " + std::to_string(log_entry.buy_log_.quantity_)
               + " book(s) with ISBN= " + std::string(log_entry.buy_log_.book_.isbn_.a)
               + " spending " + std::to_string(log_entry.buy_log_.book_.price_ * log_entry.buy_log_.quantity_)
-              + " at " + std::to_string(log_entry.buy_log_.time_);
+              + " at time " + std::to_string(log_entry.buy_log_.time_);
       break;
     case LogEntry::MODIFY:
       log_str = "[MODIFY] User " + std::string(log_entry.modify_log_.admin_account_.getID().a)
               + " modified book from " + BookToString(log_entry.modify_log_.old_book_)
               + " to " + BookToString(log_entry.modify_log_.new_book_)
-              + " at " + std::to_string(log_entry.modify_log_.time_);
+              + " at time " + std::to_string(log_entry.modify_log_.time_);
       break;
     case LogEntry::IMPORT:
       log_str = "[IMPORT] User " + std::string(log_entry.import_log_.admin_account_.getID().a)
               + " imported " + std::to_string(log_entry.import_log_.quantity_)
               + " book(s) with ISBN= " + std::string(log_entry.import_log_.book_.isbn_.a)
               + " costing " + std::to_string(log_entry.import_log_.total_cost_)
-              + " at " + std::to_string(log_entry.import_log_.time_);
+              + " at time " + std::to_string(log_entry.import_log_.time_);
       break;
     default:
       log_str = "[UNKNOWN LOG TYPE]";
@@ -151,8 +151,7 @@ void Logs::AddLog(const LogEntry &log_entry) {
 }
 
 void Logs::QueryLog() {
-  freopen("../data/logs.txt", "w", stdout);
-  printf("Logs:\n");
+  freopen("logs.txt", "w", stdout);
   int total_logs = logs_.size();
   for (int i = 0; i < total_logs; ++i) {
     LogInfo log_info;
@@ -163,8 +162,7 @@ void Logs::QueryLog() {
 }
 
 void Logs::QueryFinanceLog() {
-  freopen("../data/finance_logs.txt", "w", stdout);
-  printf("Finance Logs:\n");
+  freopen("finance_logs.txt", "w", stdout);
   int total_logs = finance_logs_.size();
   for (int i = 0; i < total_logs; ++i) {
     LogInfo log_info;
@@ -175,8 +173,7 @@ void Logs::QueryFinanceLog() {
 }
 
 void Logs::QueryEmployeeLog() {
-  freopen("../data/employee_logs.txt", "w", stdout);
-  printf("Employee Logs Sorted by Employee's ID:\n");
+  freopen("employee_logs.txt", "w", stdout);
   std::vector<LogInfo> all_logs = employee_logs_.get_all();
   for (const auto &log_info : all_logs) {
     printf("%s\n", log_info.info);

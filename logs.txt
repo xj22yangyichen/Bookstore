@@ -1,0 +1,17 @@
+[LOGIN] User root logged in at time 1
+[USER_ADD] User root added user worker with privilege 3 at time 2
+[LOGOUT] User root logged out at time 3
+[LOGIN] User worker logged in at time 4
+[MODIFY] User worker modified book from (ISBN: 9787559609304 Title:  Author:  Keywords:  Price: 0.000000) to (ISBN: 9787559609304 Title: Rodriguez,ThompsonandRyan Author:  Keywords:  Price: 0.000000) at time 5
+[MODIFY] User worker modified book from (ISBN: 9787559609304 Title: Rodriguez,ThompsonandRyan Author:  Keywords:  Price: 0.000000) to (ISBN: 9787559609304 Title: Rodriguez,ThompsonandRyan Author: Kim,GarciaandPalmer Keywords: Roman-Morales|MorrowInc Price: 50.000000) at time 6
+[MODIFY] User worker modified book from (ISBN: 9787559609304 Title: Rodriguez,ThompsonandRyan Author: Kim,GarciaandPalmer Keywords: Roman-Morales|MorrowInc Price: 50.000000) to (ISBN: 9787559609304 Title: Rodriguez,ThompsonandRyan Author: Kim,GarciaandPalmer Keywords: Roman-Morales|MorrowInc Price: 49.800000) at time 7
+[MODIFY] User worker modified book from (ISBN: 9787544287722 Title:  Author:  Keywords:  Price: 0.000000) to (ISBN: 9787544287722 Title: Eaton-Finley Author: HendrixInc Keywords: Vance-Robinson|Lopez-Keller Price: 45.000000) at time 8
+[LOGOUT] User worker logged out at time 9
+[LOGIN] User root logged in at time 10
+[LOGIN] User worker logged in at time 11
+[MODIFY] User worker modified book from (ISBN: 9787544287722 Title: Eaton-Finley Author: HendrixInc Keywords: Vance-Robinson|Lopez-Keller Price: 45.000000) to (ISBN: 9787544287722 Title: Eaton-Finley Author: HendrixInc Keywords: Vance-Robinson|Lopez-Keller Price: 45.000000) at time 12
+[LOGIN] User root logged in at time 13
+[LOGOUT] User root logged out at time 14
+[REGISTER] User user registered at time 15
+[LOGIN] User user logged in at time 16
+[LOGIN] User root logged in at time 17

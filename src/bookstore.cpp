@@ -787,9 +787,39 @@ void Bookstore::Import() {
 }
 
 void Bookstore::Report() {
-  // TODO
+  if (current_user_.getPrivilege() < 7) {
+    printf("Invalid\n");
+    return;
+  }
+  
+  std::string token = current_command_.next_token();
+  if (token == "finance") {
+    if (!current_command_.next_token().empty()) {
+      printf("Invalid\n");
+      return;
+    }
+    logs_.QueryFinanceLog();
+  } else if (token == "employee") {
+    if (!current_command_.next_token().empty()) {
+      printf("Invalid\n");
+      return;
+    }
+    logs_.QueryEmployeeLog();
+  }
+  printf("Invalid\n");
+  return;
 }
 
 void Bookstore::Log() {
-  // TODO
+  if (current_user_.getPrivilege() < 7) {
+    printf("Invalid\n");
+    return;
+  }
+
+  if (!current_command_.next_token().empty()) {
+    printf("Invalid\n");
+    return;
+  }
+
+  logs_.QueryLog();
 }
