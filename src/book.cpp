@@ -119,7 +119,6 @@ Book Books::GetBooksById(const int id) {
     throw std::invalid_argument("Invalid book ID");
   }
   if (id >= data_.size()) {
-    // std::cerr << "data size: " << data_.size() << ", requested id: " << id << std::endl;
     throw std::out_of_range("Book ID out of range");
   }
   Book book;

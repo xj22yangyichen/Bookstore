@@ -44,11 +44,9 @@ public:
   void insert(std::pair<index_t, value_t> record) {
     Index idx;
     Block target;
-    // std::cerr << "Inserting record: " << record.first.a << std::endl;
 
     // 链表中还没有数据，新建一个节点
     if (head == -1) {
-      // std::cerr << "Inserting first record.\n";
       target.size = 1;
       target.records[0] = record;
       int block_index = data.write(target);
@@ -56,7 +54,6 @@ public:
       idx.block_id = block_index;
       idx.next = -1;
       head = list_index.write(idx);
-      // std::cerr << "First record inserted at head: " << head << std::endl;
       return;
     }
     
@@ -176,7 +173,6 @@ public:
 
   // 查找记录并返回其值
   std::vector<value_t> get(index_t index) {
-    // std::cerr << "Getting record for index: " << index.a << std::endl;
     std::vector<value_t> result = {};
     Index idx;
     Block target;
@@ -186,7 +182,6 @@ public:
       return result;
     }
 
-    // std::cerr << "Starting search from head: " << head << std::endl;
     // 找到包含该记录的块
     int pos = head;
     list_index.read(idx, pos);
@@ -199,7 +194,6 @@ public:
       }
     }
 
-    // std::cerr << "Searching in block with max record: " << idx.max_record.first.a << std::endl;
     // 读取目标块并查找记录
     while (true) {
       data.read(target, idx.block_id);

@@ -138,7 +138,6 @@ my_string GetAuthorForSearch(std::string &s) {
 }
 
 my_string GetKeyword(std::string s) {
-  // std::cerr << "Parsing keywords from string: " << s << std::endl;
   if (s.size() > 60 || s.back() == '|') {
     return my_string("\n");
   }

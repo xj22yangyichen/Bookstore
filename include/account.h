@@ -58,7 +58,6 @@ public:
   Accounts(const std::string &filename) : accounts_(filename) {}
 
   void insert(const Account &account) {
-    // std::cerr << "Inserting account with ID: " << account.getID().a << std::endl;
     accounts_.insert(std::make_pair(account.getID(), account)); 
   }
 

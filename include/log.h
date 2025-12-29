@@ -110,7 +110,6 @@ public:
            logs_("logs.dat"),
            finance_logs_("finance_logs.dat"),
            employee_logs_("employee_logs") {
-    // std::cerr << "Logs initialized." << std::endl;
     finance_.initialise();
     logs_.initialise();
     finance_logs_.initialise();

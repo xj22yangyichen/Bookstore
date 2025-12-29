@@ -2,16 +2,12 @@
 
 Bookstore::Bookstore() : logs_(), books_(), accounts_("accounts") {
   time = logs_.GetTime();
-  // std::cerr << "Current time: " << time << std::endl;
   if (time == 0) {
-    // std::cerr << "First time running, initializing root account." << std::endl;
     accounts_.insert(Account(my_string("Administrator"), my_string("root"), my_string("sjtu"), 7));
-    // std::cerr << accounts_.find(my_string("root")).getName().a << std::endl;
   }
 }
 
 Bookstore::~Bookstore() {
-  // std::cerr << "Shutting down bookstore, logging out all users." << std::endl;
   while (!logged_in_users_.empty()) {
     Logout(true);
   }
@@ -23,7 +19,6 @@ void Bookstore::Run() {
   while (true) {
     bool has_command = current_command_.read();
     std::string command = current_command_.next_token();
-    // std::cerr << "Command: " << command << std::endl;
     if (command.empty()) {
       if (!has_command) {
         break;
@@ -86,14 +81,12 @@ void Bookstore::Run() {
 }
 
 void Bookstore::Login() {
-  // std::cerr << "Login command invoked." << std::endl;
   std::string token = current_command_.next_token();
   if (token.empty()) {
     printf("Invalid\n");
     return;
   }
   my_string user_id = GetUserID(token);
-  // std::cerr << "User ID: " << user_id.a << std::endl;
   if (user_id.a[0] == '\n') {
     printf("Invalid\n");
     return;
@@ -101,21 +94,18 @@ void Bookstore::Login() {
 
   Account account = accounts_.find(user_id);
   if (account == Account()) {
-    // std::cerr << "Account not found." << std::endl;
     printf("Invalid\n");
     return;
   }
 
   token = current_command_.next_token();
   if (token.empty()) {
-    // std::cerr << "No password provided, checking privilege." << std::endl;
     if (account.getPrivilege() >= current_user_.getPrivilege()) {
       printf("Invalid\n");
       return;
     }
   } else {
     my_string password = GetPassword(token);
-    // std::cerr << "Password: " << password.a << std::endl;
     if (password.a[0] == '\n' || !account.checkPassword(password)) {
       printf("Invalid\n");
       return;
@@ -519,7 +509,6 @@ void Bookstore::Show() {
 
 void Bookstore::Buy() {
   if (current_user_.getPrivilege() < 1) {
-    // std::cerr << "Privilege too low to buy." << std::endl;
     printf("Invalid\n");
     return;
   }
@@ -531,7 +520,6 @@ void Bookstore::Buy() {
   }
   my_string ISBN = GetISBN(token);
   if (ISBN.a[0] == '\n') {
-    // std::cerr << "Invalid ISBN format." << std::endl;
     printf("Invalid\n");
     return;
   }
@@ -554,16 +542,12 @@ void Bookstore::Buy() {
 
   auto books = books_.GetBooksByIsbn(ISBN);
   if (books.empty()) {
-    // std::cerr << "Book with ISBN not found: " << ISBN.a << std::endl;
     printf("Invalid\n");
     return;
   }
   Book book = books[0];
 
-  // std::cerr << "Attempting to buy book ISBN: " << ISBN.a << std::endl;
-  // std::cerr << "Requested: " << quantity << ", Available: " << book.quantity_ << std::endl;
   if (book.quantity_ < quantity) {
-    // std::cerr << "Not enough quantity for book: " << ISBN.a << std::endl;
     printf("Invalid\n");
     return;
   }
@@ -606,16 +590,12 @@ void Bookstore::Select() {
 
   auto books = books_.GetBooksByIsbn(ISBN);
   Book book;
-  // std::cerr << "Find " << books.size() << " books with ISBN: " << ISBN.a << std::endl;
   if (books.empty()) {
     book = Book(books_.size(), ISBN);
     books_.add(book);
-    // std::cerr << "Added new book with ISBN: " << ISBN.a << " ID: " << book.id_ << std::endl;
   } else {
     book = books[0];
-    // std::cerr << "Selected existing book with ID: " << book.id_ << std::endl;
   }
-  // std::cerr << "Selected book ID: " << book.id_ << std::endl;
   selected_books_id_.pop();
   selected_books_id_.push(book.id_);
   current_selected_book_id_ = book.id_;
@@ -623,7 +603,6 @@ void Bookstore::Select() {
 
 void Bookstore::Modify() {
   if (current_user_.getPrivilege() < 3 || current_selected_book_id_ == -1) {
-    // std::cerr << "Invalid modify attempt by user: " << current_user_.getID().a << std::endl;
     printf("Invalid\n");
     return;
   }
@@ -635,7 +614,6 @@ void Bookstore::Modify() {
     return;
   }
 
-  // std::cerr << "Modifying book with ISBN: " << old_book.isbn_.a << std::endl;
   my_string new_isbn = my_string(), new_title = my_string(),
             new_author = my_string(), new_keyword = my_string();
   new_isbn.a[0] = new_title.a[0] = new_author.a[0] = new_keyword.a[0] = '\n';
@@ -643,7 +621,6 @@ void Bookstore::Modify() {
   while (!token.empty()) {
     my_string ISBN = GetISBNForSearch(token);
     if (ISBN.a[0] != '\n') {
-      // std::cerr << "Found new ISBN: " << ISBN.a << std::endl;
       if (new_isbn.a[0] != '\n') {
         printf("Invalid\n");
         return;
@@ -664,7 +641,6 @@ void Bookstore::Modify() {
     }
     my_string author = GetAuthorForSearch(token);
     if (author.a[0] != '\n') {
-      // std::cerr << "Found new author: " << author.a << std::endl;
       if (new_author.a[0] != '\n') {
         printf("Invalid\n");
         return;
@@ -675,7 +651,6 @@ void Bookstore::Modify() {
     }
     my_string keyword = GetKeywordForSearch(token);
     if (keyword.a[0] != '\n') {
-      // std::cerr << "Found new keyword: " << keyword.a << std::endl;
       if (new_keyword.a[0] != '\n') {
         printf("Invalid\n");
         return;
@@ -686,7 +661,6 @@ void Bookstore::Modify() {
     }
     double price = GetPriceForSearch(token);
     if (price >= 0) {
-      // std::cerr << "Found new price: " << price << std::endl;
       if (new_price >= 0) {
         printf("Invalid\n");
         return;
@@ -695,13 +669,11 @@ void Bookstore::Modify() {
       token = current_command_.next_token();
       continue;
     }
-    // std::cerr << "Invalid modification token: " << token << std::endl;
     printf("Invalid\n");
     return;
   }
 
   if (!books_.GetBooksByIsbn(new_isbn).empty()) {
-    // std::cerr << "ISBN already exists: " << new_isbn.a << std::endl;
     printf("Invalid\n");
     return;
   }

@@ -34,10 +34,8 @@ public:
   }
 
   void initialise(string FN = "") {
-    // std::cerr << "Initializing MemoryRiver with file: " << (FN == "" ? file_name : FN) << std::endl;
     if (FN != "") file_name = FN;
     if (!std::filesystem::exists(file_name)) {
-      // std::cerr << "File does not exist. Creating new file: " << file_name << std::endl;
       std::ofstream create_file(file_name, std::ios::binary);
       if (!create_file.is_open()) {
         throw std::runtime_error("Failed to create file: " + file_name);
@@ -98,10 +96,6 @@ public:
     int index = info_len * sizeof(int) + order * sizeofT;
     file.seekg(index, std::ios::beg);
     file.read(reinterpret_cast<char *>(&t), sizeofT);
-  }
-
-  // 删除位置索引index对应的对象(不涉及空间回收时，可忽略此函数)，保证调用的index都是由write函数产生
-  void Delete(int index) {
   }
 };
 
