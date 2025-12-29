@@ -8,3 +8,6 @@ test_output/
 *.dat
 in.txt
 out.txt
+employee_logs.txt
+finance_logs.txt
+logs.txt

@@ -20,7 +20,7 @@ private:
 public:
   MemoryRiver() = default;
 
-  MemoryRiver(const string& file_name) : file_name(file_name) {}
+  MemoryRiver(const string& file_name) : file_name("./data/" + file_name) {}
 
   ~MemoryRiver() {
     if (file.is_open()) {
@@ -34,7 +34,7 @@ public:
   }
 
   void initialise(string FN = "") {
-    if (FN != "") file_name = FN;
+    if (FN != "") file_name = "./data/" + FN;
     if (!std::filesystem::exists(file_name)) {
       std::ofstream create_file(file_name, std::ios::binary);
       if (!create_file.is_open()) {

@@ -162,8 +162,6 @@ public:
         prev_idx.next = idx.next;
         list_index.update(prev_idx, prev_pos);
       }
-      list_index.Delete(pos);
-      data.Delete(idx.block_id);
     } else {
       // 更新块的最大记录
       idx.max_record = target.records[target.size - 1];
